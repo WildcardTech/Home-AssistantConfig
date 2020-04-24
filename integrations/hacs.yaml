@@ -1,0 +1,3 @@
+#HACS uses the GitHub API to gather information
+hacs:
+  token: !secret hacs_token

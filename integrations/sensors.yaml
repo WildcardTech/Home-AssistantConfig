@@ -1,0 +1,140 @@
+sensor: #!include sensors.yaml
+### All Senser Go Here ###
+# Holiday Sensors
+#sensor:
+  # - platform: mqtt
+  #   name: "Current LED"
+  #   state_topic: "LightMCU/locator"
+
+### HA Sensors
+  - platform: uptime
+    name: Time Online
+    unit_of_measurement: hours
+  - platform: worldclock
+    time_zone: America/Chicago
+    name: Central Time
+  - platform: season
+    type: astronomical    
+
+#system monitor Sensor
+  - platform: systemmonitor
+    resources:
+      - type: disk_use_percent
+        arg: /home
+      - type: memory_free
+      - type: processor_use
+
+# Average Temp Sensors
+  - platform: min_max
+    name: "Average House Temp"
+    type: "mean"
+    round_digits: 1
+    entity_ids:
+      - sensor.workout_room_temperature
+      - sensor.wonder_room_temperature
+      - sensor.menize_room_temperature
+      - sensor.master_bed_room_temperature
+
+#Average House Humidity
+  - platform: min_max
+    name: "Average House Humidity"
+    type: "mean"
+    round_digits: 1
+    entity_ids:
+      - sensor.workout_room_humidity
+      - sensor.wonder_room_humidity
+      - sensor.menize_room_humidity
+      - sensor.master_bed_room_humidity
+
+# Weather prediction
+#Home Weather
+  - platform: darksky
+    api_key: !secret darksky_password
+    latitude: !secret latitude_kosy
+    longitude: !secret longitude_kosy
+    units: us
+    monitored_conditions:
+      - daily_summary
+      - nearest_storm_distance
+      - nearest_storm_bearing
+      - uv_index
+      - humidity
+      - wind_speed
+      - apparent_temperature
+      - alerts
+      - pressure
+#Weather in Goodman
+  - platform: darksky
+    api_key: !secret darksky_password
+    name: Goodman
+    latitude: !secret latitude_gman
+    longitude: !secret longitude_gman
+    units: us
+    monitored_conditions:
+      - nearest_storm_distance
+      - nearest_storm_bearing
+      - uv_index
+      - humidity
+      - wind_speed
+      - apparent_temperature
+      - alerts
+
+    scan_interval:
+      days: 0
+      hours: 1
+      minutes: 0
+      seconds: 0
+      milliseconds: 0
+
+
+
+#Hatching & Baby Chicks Sensor
+#  Sonoffth16
+  - platform: mqtt
+    name: "Baby Chicks Temp"
+    state_topic: "tele/sonoffth/SENSOR"
+    unit_of_measurement: "°F"
+    value_template: "{{ value_json.DS18B20.Temperature }}"
+  - platform: mqtt
+    name: "Baby Chicks Temp"
+    state_topic: "tele/sonoffth/SENSOR"
+    unit_of_measurement: "°F"
+    value_template: "{{ value_json.DS18B20.Temperature }}"
+#  Sonoffth16-2
+  - platform: mqtt
+    name: "Hatching Temp"
+    state_topic: "tele/sonoffth2/SENSOR"
+    unit_of_measurement: "°F"
+    value_template: "{{ value_json.AM2301.Temperature }}"
+  - platform: mqtt
+    name: "Hatching Humidity"
+    state_topic: "tele/sonoffth2/SENSOR"
+    unit_of_measurement: "%"
+    value_template: "{{ value_json.AM2301.Humidity }}"
+
+# #Shelly PM1
+#   - platform: mqtt
+#     name: "Outside Lights Temperature"
+#     state_topic: "tele/outsidelights/SENSOR"
+#     unit_of_measurement: "°F"
+
+#WLED Random Number
+  - platform: random
+    name: Random Effect
+    minimum: 0
+    maximum: 82
+
+
+#Dates to Count Down to
+  # - platform: anniversaries
+  #   name: Christmas Day
+  #   date: '2019-12-25'
+  #   icon_normal: mdi:calendar-today
+  #   icon_today: mdi:calendar-star
+  #   icon_tomorrow: mdi:calendar
+  # - platform: anniversaries
+  #   name: Thanksgiving Day
+  #   date: '2019-11-28'
+  #   icon_normal: mdi:calendar-today
+  #   icon_today: mdi:calendar-star
+  #   icon_tomorrow: mdi:calendar

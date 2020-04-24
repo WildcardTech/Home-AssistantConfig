@@ -1,0 +1,26 @@
+panel_iframe:
+
+  foldingathome:
+    title: Folding@home
+    icon: mdi:bacteria-outline
+    url: http://10.117.2.102:7396
+#  nodered:
+#    title: Node-Red
+#    icon: mdi:shuffle-variant
+#    url: http://10.117.2.102:1880
+#  tasmoweb:
+#    title: TasmoAdmin
+#    icon: mdi:lightbulb-on
+#    url: http://10.117.2.102:9541
+  # esphomeweb:
+  #   title: esphome
+  #   icon: mdi:home-city
+  #   url: http://10.117.2.102:6052
+  # piholeweb:
+  #   title: PiHole
+  #   icon: mdi:chart-pie
+  #   url: http://10.117.2.102:4865
+  # backup:
+  #   title: 'Snapshots'
+  #   icon: mdi:cloud-upload
+  #   url: http://10.117.2.102:1627

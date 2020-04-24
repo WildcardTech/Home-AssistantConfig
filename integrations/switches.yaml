@@ -1,0 +1,71 @@
+switch: #!include switches.yaml
+###All Switches Go Here ###
+#switch:
+  - platform: mqtt
+    name: "Christmas Tree"
+    icon: mdi:christianity-outline
+    command_topic: "cmnd/xmastree/power"
+    state_topic: "stat/xmastree/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false
+  
+  - platform: mqtt
+    name: "Shop Light"
+    command_topic: "cmnd/Sonoff02/power"
+    state_topic: "stat/Sonoff02/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false
+
+  - platform: mqtt
+    name: "Carport Light"
+    icon: mdi:home-variant
+    command_topic: "cmnd/carport/power"
+    state_topic: "stat/carport/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false
+
+  - platform: mqtt
+    name: "Baby Chicks"
+    icon: mdi:lighthouse-on
+    command_topic: "cmnd/sonoffth/power"
+    state_topic: "stat/sonoffth/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false
+    
+  - platform: mqtt
+    name: "Hatching"
+    icon: mdi:lighthouse-on
+    command_topic: "cmnd/sonoffth2/power"
+    state_topic: "stat/sonoffth2/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false
+
+  - platform: mqtt
+    name: "Workout Room Light"
+    icon: mdi:ceiling-light
+    command_topic: "cmnd/shelly1-2598D4/POWER"
+    state_topic: "stat/shelly1-2598D4/POWER"
+    qos: 1
+    payload_on: "ON"
+    payload_off: "OFF"
+    retain: false
+
+  - platform: mqtt
+    name: "Hall Light"
+    icon: mdi:ceiling-light
+    state_topic: "shellies/shelly1-2C75DF/relay/0"
+    command_topic: "shellies/shelly1-2C75DF/relay/0/command"
+    payload_on: "on"
+    payload_off: "off"
+    retain: false
+

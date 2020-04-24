@@ -1,0 +1,9 @@
+# nest:
+#   client_id: !secret nest_id
+#   client_secret: !secret nest_password
+#   sensors:
+#     monitored_conditions:
+#       - 'temperature'
+#       - 'target'
+#       - 'operation_mode'
+#       - 'havac_state'

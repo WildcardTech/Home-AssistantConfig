@@ -1,0 +1,4 @@
+foldingathomecontrol:
+  - address: "localhost"
+    port: 36330
+    password: "password"

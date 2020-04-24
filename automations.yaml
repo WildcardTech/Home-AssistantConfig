@@ -1,0 +1,704 @@
+- id: '3022000003'
+  alias: Hallway input On
+  trigger:
+  - entity_id: binary_sensor.hallway_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: i
+    service: input_boolean.turn_on
+- id: '3022000004'
+  alias: Server_Door_open_or_shut
+  trigger:
+  - entity_id: binary_sensor.server_door
+    for: 00:00:05
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      payload: F9C1B9off
+      topic: tele/sonoff_rf_bridge/RESULT
+    service: mqtt.publish
+- id: '3022000005'
+  alias: Hallway input Off
+  trigger:
+  - entity_id: input_boolean.hall_motion
+    for: 00:00:05
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition: []
+  action:
+  - data:
+      entity_id: input_boolean.hall_motion
+    service: input_boolean.turn_off
+- id: '3022000007'
+  alias: Hatching_ON
+  trigger:
+  - below: '100'
+    entity_id: sensor.hatching_temp
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.hatching_eggs
+    service: switch.turn_on
+- id: '3022000008'
+  alias: Hatching_Off
+  trigger:
+  - above: '102'
+    entity_id: sensor.hatching_temp
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.hatching_eggs
+    service: switch.turn_off
+- id: '3022000009'
+  alias: Baby_Chicks_Off
+  trigger:
+  - above: '90'
+    entity_id: sensor.baby_chicks_temp
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.baby_chicks
+    service: switch.turn_off
+- id: '3022000010'
+  alias: Baby_Chicks_On
+  trigger:
+  - below: '65'
+    entity_id: sensor.baby_chicks_temp
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      entity_id: switch.baby_chicks
+    service: switch.turn_on
+- id: '3022000001'
+  alias: Tasmota State on HA Restart
+  trigger:
+    platform: homeassistant
+    event: start
+  condition: []
+  action:
+  - service: mqtt.publish
+    data:
+      topic: cmnd/sonoffs/backlog
+      payload: 'power1 ;power2 ;power3 ;power4 ;power5; dimmer; state '
+- id: '3022000013'
+  alias: Workout Light On
+  trigger:
+  - entity_id: binary_sensor.cartport_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+    condition: state
+    entity_id: sun.sun
+    state: below_horizon
+  action:
+  - data:
+      entity_id: switch.workout_room_light
+    service: switch.turn_on
+- id: '3022000014'
+  alias: Workout Light Off
+  trigger:
+  - entity_id: binary_sensor.cartport_door
+    for: 00:05:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - condition: and
+    conditions:
+    - condition: state
+      entity_id: sun.sun
+      state: below_horizon
+    - condition: state
+      entity_id: media_player.workout_room_speaker
+      state: 'off'
+    - condition: state
+      entity_id: media_player.workout_room_tv
+      state: 'off'
+  action:
+  - data:
+      entity_id: switch.workout_room_light
+    service: switch.turn_off
+- id: '3022000015'
+  alias: HA_Startup
+  trigger:
+  - event: start
+    platform: homeassistant
+  condition: []
+  action:
+  - data:
+      title: HA is Alive
+      message: HA is Alive
+    service: notify.gmail_jj
+- id: '3022000016'
+  alias: EMAIL_Home_Nearest_Storm
+  trigger:
+  - below: '10'
+    entity_id: sensor.dark_sky_nearest_storm_distance
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Storms are {{states.sensor.dark_sky_nearest_storm_distance.state}}
+        Miles Away From Home
+      title: Storms are {{states.sensor.dark_sky_nearest_storm_distance.state}} Miles
+        Away From Home
+    service: notify.gmail_jj
+- id: 3022000016a
+  alias: EMAIL_Goodman_Nearest_Storm
+  trigger:
+  - below: '10'
+    entity_id: sensor.goodman_nearest_storm_distance
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Storms are {{states.sensor.dark_sky_nearest_storm_distance.state}}
+        Miles Away From Goodman
+      title: Storms are {{states.sensor.dark_sky_nearest_storm_distance.state}} Miles
+        Away From Goodman
+    service: notify.gmail_jj
+- id: '30220000162'
+  alias: Temp_Feels_Like_above_97
+  trigger:
+  - above: '97'
+    entity_id: sensor.dark_sky_apparent_temperature
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: Feels Like {{states.sensor.dark_sky_apparent_temperature.state}} Stay
+        Hydrated
+      title: Feels Like {{states.sensor.dark_sky_apparent_temperature.state}} Stay
+        Hydrated
+    service: notify.gmail_jj
+- id: '302212916000011'
+  alias: '0_Aveo_Home_Automation '
+  trigger:
+  - entity_id: binary_sensor.aveo
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - after: '15:00:00'
+    before: '21:00:00'
+    condition: time
+  action:
+  - data:
+      code: '1982'
+    entity_id: alarm_control_panel.home_alarm
+    service: alarm_control_panel.alarm_disarm
+- id: '302212919000012'
+  alias: '0_Aveo_Away_Automation '
+  trigger:
+  - entity_id: binary_sensor.aveo
+    for: 00:00:00
+    from: 'on'
+    platform: state
+    to: 'off'
+  condition:
+  - after: 06:00:00
+    before: 09:00:00
+    condition: time
+  action:
+  - data:
+      code: '1982'
+    entity_id: alarm_control_panel.home_alarm
+    service: alarm_control_panel.alarm_arm_away
+- id: '3022100000'
+  alias: Alarm_Sensor_Slide_Door
+  trigger:
+  - entity_id: binary_sensor.sliding_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      title: Bedroom Door Open
+      message: Check Cameras
+    service: notify.gmail
+- id: '3022100001'
+  alias: Alarm_Sensor_Dogie_Door
+  trigger:
+  - entity_id: binary_sensor.dogie_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      title: Dogie Door Open
+      message: Check Cameras
+    service: notify.gmail
+- id: '3022100002'
+  alias: Alarm_Sensor_Carport_Door
+  trigger:
+  - entity_id: binary_sensor.cartport_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      title: Carport Door Open
+      message: Check Cameras
+    service: notify.gmail
+- id: '3022100003'
+  alias: Alarm_Sensor_Hall_Motion
+  trigger:
+  - entity_id: binary_sensor.hallway_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      title: Motion In Hallway
+      message: Check Cameras
+    service: notify.gmail
+- id: '3022100004'
+  alias: Alarm_Sensor_Wonder_Room_Motion
+  trigger:
+  - entity_id: binary_sensor.wonder_room_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      title: Motion In Wonder Room
+      message: Check Cameras
+    service: notify.gmail
+- id: '3022100005'
+  alias: Alarm_Sensor_Menize_Room_Motion
+  trigger:
+  - entity_id: binary_sensor.menize_room_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      title: Motion In Menize Room
+      message: Check Cameras
+    service: notify.gmail
+- id: '3022100006'
+  alias: Alarm_Sensor_Shop_Side_Door
+  trigger:
+  - entity_id: binary_sensor.shop_door
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      title: Shop Door Open
+      message: Check Cameras
+    service: notify.gmail
+- id: '3022100007'
+  alias: Alarm_Sensor_Workout_Room
+  trigger:
+  - entity_id: binary_sensor.workout_room_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      title: Motion In Workout Room
+      message: Check Cameras
+    service: notify.gmail
+- id: '3022100008'
+  alias: Alarm_Sensor_Master_Bed_Room
+  trigger:
+  - entity_id: binary_sensor.master_bed_room_motion
+    from: 'off'
+    platform: state
+    to: 'on'
+  condition:
+  - condition: state
+    entity_id: alarm_control_panel.home_alarm
+    state: armed_away
+  action:
+  - data:
+      message: Check Cameras
+      title: Motion In Master Bed Room
+    service: notify.gmail
+- id: '30220000170'
+  alias: School_Day_Girls_Go_To_Bed_Volume
+  trigger:
+  - platform: time
+    at: '20:50:00'
+  action:
+  - service: media_player.volume_set
+    entity_id: media_player.family_room_mini
+    data_template:
+      volume_level: '0.7'
+- id: '3022000017'
+  alias: School_Day_Girls_Go_To_Bed
+  trigger:
+    platform: time
+    at: '20:59:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+  action:
+  - data:
+      entity_id: media_player.family_room_mini
+      message: Girls go to bed and brush your teeth before Daisy gets slap happy and
+        Mr Duke and Princess and Bingo too
+    service: tts.google_say
+- id: '30220000171'
+  alias: School_Day_Bed_Time_9
+  trigger:
+    platform: time
+    at: '21:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+  action:
+    service: light.turn_on
+    data:
+      entity_id:
+      - light.wonder_light_on_fan
+      - light.menize_light_on_fan
+- id: '30220000172'
+  alias: School_Day_Bed_Time_9_05
+  trigger:
+    platform: time
+    at: '21:05:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+  action:
+  - service: light.turn_off
+    data:
+      entity_id:
+      - light.wonder_light_on_fan
+      - light.menize_light_on_fan
+  - service: fan.set_speed
+    data:
+      speed: 3
+      entity_id:
+      - fan.wonder_bedroom_fan
+      - fan.menize_bedroom_fan
+- id: '30220000173'
+  alias: School_Day_Bed_Time_6
+  trigger:
+    platform: time
+    at: 06:00:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+  - service: light.turn_on
+    data:
+      entity_id:
+      - light.wonder_light_on_fan
+      - light.menize_light_on_fan
+  - service: fan.set_speed
+    data:
+      speed: false
+      entity_id:
+      - fan.wonder_bedroom_fan
+      - fan.menize_bedroom_fan
+- id: '30220000174'
+  alias: School_Day_Time 6_15
+  trigger:
+    platform: time
+    at: 06:15:00
+  condition:
+  - condition: time
+    weekday:
+    - mon
+    - tue
+    - wed
+    - thu
+    - fri
+  action:
+    service: light.turn_off
+    data:
+      entity_id:
+      - light.wonder_light_on_fan
+      - light.menize_light_on_fan
+- id: '1575428070062'
+  alias: Alarm_Able_Automations_Away
+  description: ''
+  trigger:
+  - entity_id: alarm_control_panel.home_alarm
+    for: 00:00:00
+    from: pending
+    platform: state
+    to: armed_away
+  condition: []
+  action:
+  - data:
+      entity_id:
+      - automation.alarm_sensor_carport_door
+      - automation.alarm_sensor_dogie_door
+      - automation.alarm_sensor_hall_motion
+      - automation.alarm_sensor_menize_room_motion
+      - automation.alarm_sensor_master_bed_room
+      - automation.alarm_sensor_shop_side_door
+      - automation.alarm_sensor_slide_door
+      - automation.alarm_sensor_wonder_room_motion
+      - automation.alarm_sensor_workout_room
+    service: automation.turn_on
+- id: '1575428721553'
+  alias: Alarm_Disable_Automations_away
+  description: ''
+  trigger:
+  - entity_id: alarm_control_panel.home_alarm
+    from: armed_away
+    platform: state
+    to: disarmed
+  condition: []
+  action:
+  - data:
+      entity_id:
+      - automation.alarm_sensor_carport_door
+      - automation.alarm_sensor_dogie_door
+      - automation.alarm_sensor_hall_motion
+      - automation.alarm_sensor_menize_room_motion
+      - automation.alarm_sensor_master_bed_room
+      - automation.alarm_sensor_shop_side_door
+      - automation.alarm_sensor_slide_door
+      - automation.alarm_sensor_wonder_room_motion
+      - automation.alarm_sensor_workout_room
+    service: automation.turn_off
+- id: '1575431093193'
+  alias: Alarm_Disable_Automations_Home
+  description: ''
+  trigger:
+  - entity_id: alarm_control_panel.home_alarm
+    from: disarmed
+    platform: state
+    to: armed_home
+  condition: []
+  action:
+  - data:
+      entity_id:
+      - automation.alarm_sensor_carport_door
+      - automation.alarm_sensor_dogie_door
+      - automation.alarm_sensor_master_bed_room
+      - automation.alarm_sensor_shop_side_door
+      - automation.alarm_sensor_slide_door
+      - automation.alarm_sensor_workout_room
+    service: automation.turn_off
+- id: '1575431258496'
+  alias: Alarm_Able_Automations_home
+  description: ''
+  trigger:
+  - entity_id: alarm_control_panel.home_alarm
+    from: disarmed
+    platform: state
+    to: armed_home
+  condition: []
+  action:
+  - data:
+      entity_id:
+      - automation.alarm_sensor_carport_door
+      - automation.alarm_sensor_dogie_door
+      - automation.alarm_sensor_master_bed_room
+      - automation.alarm_sensor_shop_side_door
+      - automation.alarm_sensor_slide_door
+      - automation.alarm_sensor_workout_room
+    service: automation.turn_on
+- id: '1576541628141'
+  alias: Holidays No School
+  description: ''
+  trigger:
+  - entity_id: calendar.family
+    platform: state
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{is_state_attr(''calendar.family'', ''message'', ''No School'')
+      }}'
+  action:
+  - data:
+      entity_id:
+      - automation.school_day_bed_time_6
+      - automation.school_day_time_6_15
+      - automation.school_day_bed_time_9
+      - automation.school_day_bed_time_9_05
+      - automation.school_day_girls_go_to_bed_volume
+      - automation.school_day_girls_go_to_bed
+    service: automation.turn_off
+- id: '1576542327734'
+  alias: Holiday School
+  description: ''
+  trigger:
+  - entity_id: calendar.family
+    platform: state
+    to: 'on'
+  condition:
+  - condition: template
+    value_template: '{{is_state_attr(''calendar.family'', ''message'', ''School Tomorrow'')
+      }}'
+  action:
+  - data:
+      entity_id:
+      - automation.school_day_bed_time_6
+      - automation.school_day_time_6_15
+      - automation.school_day_bed_time_9
+      - automation.school_day_bed_time_9_05
+      - automation.school_day_girls_go_to_bed_volume
+      - automation.school_day_girls_go_to_bed
+    service: automation.turn_on
+- id: '1579147021952'
+  alias: LEDS_Turn_on_Outside_LEDS
+  description: ''
+  trigger:
+  - event: sunset
+    platform: sun
+  condition: []
+  action:
+  - entity_id: light.outsidelights
+    service: light.turn_on
+- id: '1579147125654'
+  alias: LEDS_Turn_off_Outside_LEDS
+  description: ''
+  trigger:
+    platform: time
+    at: '22:00:00'
+  condition:
+  - condition: time
+    weekday:
+    - sun
+    - mon
+    - tue
+    - wed
+    - thu
+  action:
+  - entity_id: light.outsidelights
+    service: light.turn_off
+- id: '1579147637592'
+  alias: LEDS_Turn_off_Outside_LEDS_SAT_FRI
+  description: ''
+  trigger:
+    platform: time
+    at: '23:59:00'
+  condition:
+  - condition: time
+    weekday:
+    - fri
+    - sat
+  action:
+  - entity_id: light.outsidelights
+    service: light.turn_off
+- id: '1579210274831'
+  alias: LEDS_WLED_Auto
+  description: ''
+  trigger:
+  - event: sunset
+    offset: 00:00:10
+    platform: sun
+  condition: []
+  action:
+  - data:
+      payload_template: FX={{ states("sensor.random_effect") }}
+      topic: wled/all/api
+    service: mqtt.publish
+- id: '1584930604979'
+  alias: School_Day_Bed_Time_7
+  description: ''
+  trigger:
+  - at: 07:00:00
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id:
+      - light.wonder_light_on_fan
+      - light.menize_light_on_fan
+    service: light.turn_on
+  - data:
+      entity_id:
+      - fan.wonder_bedroom_fan
+      - fan.menize_bedroom_fan
+      speed: false
+    service: fan.set_speed
+- id: '1584930782301'
+  alias: School_Day_Time 7_15
+  description: ''
+  trigger:
+  - at: 07:15:00
+    platform: time
+  condition: []
+  action:
+  - data:
+      entity_id:
+      - light.wonder_light_on_fan
+      - light.menize_light_on_fan
+    service: light.turn_off
+- id: '1586448569111'
+  alias: EMAIL_Dark_Sky_Alerts
+  description: ''
+  trigger:
+  - above: '0'
+    entity_id: sensor.dark_sky_alerts
+    platform: numeric_state
+  condition: []
+  action:
+  - data:
+      message: '{{states.sensor.dark_sky_alerts.attributes.description}}'
+      title: Dark Sky Alert
+    service: notify.gmail_jj

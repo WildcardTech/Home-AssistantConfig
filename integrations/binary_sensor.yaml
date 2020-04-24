@@ -1,0 +1,58 @@
+binary_sensor: #!include binary_sensor.yaml
+#RF Bridge Sensor
+  - platform: mqtt
+    state_topic: "tele/sonoff_rf_bridge/RESULT"
+    name: 'Hallway Motion'
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: 'E6224E'
+    payload_off: 'E6224Eoff'
+    device_class: motion
+    off_delay: 1
+    qos: 1
+  - platform: mqtt
+    state_topic: "tele/sonoff_rf_bridge/RESULT"
+    name: 'Server Door'
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: 'F9C1B9'
+    payload_off: 'F9C1B9off'
+    device_class: door
+    qos: 1
+  # - platform: mqtt
+  #   state_topic: "tele/sonoff_rf_bridge/RESULT"
+  #   name: 'Wonder Remote'
+  #   value_template: '{{value_json.RfReceived.Data}}'
+  #   payload_on: '151557'
+  #   payload_off: '15D557'
+  #   qos: 1
+  - platform: mqtt
+    state_topic: "tele/sonoff_rf_bridge/RESULT"
+    name: 'Cartport Door'
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: '2FE30A'
+    payload_off: '2FE30E'
+    device_class: door
+  - platform: mqtt
+    state_topic: "tele/sonoff_rf_bridge/RESULT"
+    name: 'Dogie Door'
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: '31CB0A'
+    payload_off: '31CB0E'
+    device_class: door
+  - platform: mqtt
+    state_topic: "tele/sonoff_rf_bridge/RESULT"
+    name: 'Sliding Door'
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: '34110A'
+    payload_off: '34110E'
+    device_class: door
+  - platform: mqtt
+    state_topic: "tele/sonoff_rf_bridge/RESULT"
+    name: 'Shop Door'
+    value_template: '{{value_json.RfReceived.Data}}'
+    payload_on: '33C60A'
+    payload_off: '33C60E'
+    device_class: door
+  - platform: octoprint
+    monitored_conditions:
+      - Printing
+      - Printing Error

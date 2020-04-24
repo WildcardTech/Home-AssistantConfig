@@ -1,0 +1,8 @@
+ Home_Asst:
+    name: HA Sensor
+    entities:
+      - sensor.season
+      - sensor.time_online
+      - sensor.central_time
+      - sun.sun
+##########################################

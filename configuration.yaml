@@ -1,0 +1,30 @@
+homeassistant:
+  packages: !include_dir_named integrations
+
+system_health:
+config:
+http:
+updater:
+discovery:
+conversation:
+history:
+logbook:
+map:
+stream:
+sun:
+cloud:
+##############################################################################
+# Yaml Files Include
+group: !include groups.yaml
+group split: !include_dir_merge_named ./groups
+
+automation: !include automations.yaml
+#automation split: !include_dir_list ./automations
+################################################################################
+#MQTT
+# mqtt:
+#   discovery: true
+#   discovery_prefix: homeassistant
+#   broker: core-mosquitto
+#   username: !secret mqtt_id
+#   password: !secret mqtt_password
