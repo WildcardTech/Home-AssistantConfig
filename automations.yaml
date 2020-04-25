@@ -197,7 +197,7 @@
     condition: time
   action:
   - data:
-      code: '1982'
+      code: !secret pin_number
     entity_id: alarm_control_panel.home_alarm
     service: alarm_control_panel.alarm_disarm
 - id: '302212919000012'
@@ -214,7 +214,7 @@
     condition: time
   action:
   - data:
-      code: '1982'
+      code: !secret pin_number
     entity_id: alarm_control_panel.home_alarm
     service: alarm_control_panel.alarm_arm_away
 - id: '3022100000'
