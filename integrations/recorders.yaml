@@ -13,5 +13,5 @@ recorder: #!include recorders.yaml
       - zone
     entities:
       - sun.sun
-  purge_keep_days: 2
-  purge_interval: 8
+  purge_keep_days: 1
+#  purge_interval: 8

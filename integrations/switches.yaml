@@ -11,14 +11,14 @@ switch: #!include switches.yaml
     payload_off: "OFF"
     retain: false
   
-  - platform: mqtt
-    name: "Shop Light"
-    command_topic: "cmnd/Sonoff02/power"
-    state_topic: "stat/Sonoff02/POWER"
-    qos: 1
-    payload_on: "ON"
-    payload_off: "OFF"
-    retain: false
+  # - platform: mqtt
+  #   name: "Shop Light"
+  #   command_topic: "cmnd/Sonoff02/power"
+  #   state_topic: "stat/Sonoff02/POWER"
+  #   qos: 1
+  #   payload_on: "ON"
+  #   payload_off: "OFF"
+  #   retain: false
 
   - platform: mqtt
     name: "Carport Light"
